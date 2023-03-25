@@ -1,24 +1,3 @@
-# from tensorflow import keras
-# from tensorflow_serving.apis import model_service_pb2_grpc
-# from tensorflow_serving.apis import predict_pb2
-# from tensorflow_serving.apis import prediction_service_pb2_grpc
-
-# model = keras.models.load_model('my_model.h5')
-
-# # Create a gRPC client to connect to the TensorFlow Serving server
-# channel = grpc.insecure_channel('localhost:8500')
-# stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
-
-# # Create a request to export the model
-# request = model_service_pb2.ExportModelRequest()
-# request.model_spec.name = 'my_model'
-# request.model_spec.signature_name = 'serving_default'
-# request.export_dir = '/path/to/export/directory'
-
-# # Send the request to the TensorFlow Serving server
-# response = stub.Export(request)
-
-
 import cv2 as cv
 import numpy as np
 import tensorflow as tf
