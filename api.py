@@ -9,6 +9,10 @@ class Pipeline:
         self.knee_xray = None
         self.model = tf.keras.models.load_model("./src/model/model_InceptionV3_DenseNet201_weights.h5")
     
+    
+    def detect_to_crop(self):
+        pass
+    
     def pre_processing(self, img_name):
         self.img_path = f"./static/images/{img_name}"
         self.knee_xray = cv.imread(self.img_path)
@@ -33,5 +37,6 @@ class Pipeline:
     
 # if __name__ == '__main__':        
 #     model = dl_model(img_path="./static/images/9003175L.png")
+#     model.detect_to_crop()
 #     model.pre_processing()       
 #     print(model.predict())

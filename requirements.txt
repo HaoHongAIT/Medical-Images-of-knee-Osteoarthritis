@@ -1,5 +1,4 @@
 flask
-tensorflow-serving-api
 opencv-python
 numpy
-werkzeug
+tensorflow
