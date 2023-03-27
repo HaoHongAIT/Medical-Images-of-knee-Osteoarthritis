@@ -7,7 +7,7 @@ class Pipeline:
     def __init__(self):
         self.img_path = None
         self.knee_xray = None
-        self.model = tf.keras.models.load_model("./src/model/model_InceptionV3_DenseNet201_weights.h5")
+        self.model = tf.keras.models.load_model("./model/weight/model_InceptionV3_DenseNet201_weights.h5")
     
     
     def detect_to_crop(self):
@@ -31,10 +31,10 @@ class Pipeline:
         params={
                 'image': self.img_path,
                 'predict': "có bệnh" if level>0 else "không có bệnh",
-                'level' : level_dict[level]
+                'level' : level_dict[level],
             }
         return params
-    
+
 # if __name__ == '__main__':        
 #     model = dl_model(img_path="./static/images/9003175L.png")
 #     model.detect_to_crop()

@@ -50,8 +50,7 @@ def upload_file():
             if file.filename == '':
                 return redirect(request.url)
             if file and allowed_file(file.filename):
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_names[i]))
-        
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_names[i]))        
         # pipeline
         predict_img.pre_processing(img_name=file_names[-1])
         result_params = predict_img.predict()

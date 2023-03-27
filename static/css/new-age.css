@@ -460,3 +460,8 @@ div#loading {
   margin:auto;
   cursor: wait;
   }
+
+  
+.logo img {
+    width: 25%;
+  }
