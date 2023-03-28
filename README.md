@@ -1,7 +1,7 @@
 # Classify OA
 
 ## Overview
-We trained a model to classify knee osteoarthritis KL scoring (see model [here](./src/train.ipynb)). We also build a simple web app to demo
+We trained a model to classify knee osteoarthritis KL scoring (see model [here](./model/train.ipynb)). We also build a simple web app to demo
 
 ## Dataset
 - []()

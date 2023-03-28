@@ -1,22 +1,28 @@
 from flask import Flask
-from flask import render_template, request, redirect
-import os, uuid
+from flask import render_template, request, redirect, jsonify
+import os, uuid, tensorflow
 from api import Pipeline
-
 
 app = Flask(__name__)
 app.secret_key = '1234567890qwertyuiop'
 app.config['UPLOAD_FOLDER'] = './static/images/'
 # YANDEX_API_KEY = '1234567890qwertyuiop'
 # app.wsgi_app = WhiteNoise(app.wsgi_app, root='static/')
-predict_img = Pipeline()
+model = tensorflow.keras.models.load_model("./model/weight/model_InceptionV3_DenseNet201_weights.h5")
+
 
 @app.route('/<path:path>')
 def static_file(path):
     return app.send_static_file(path)
 
-# check if file extension is right
+# 
 def allowed_file(filename):
+    """check if file extension is right
+    
+    Keyword arguments:
+    argument -- uploaded filename
+    Return: boolean
+    """    
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in set(['png', 'jpg', 'jpeg'])
 
 # force browser to hold no cache. Otherwise old result returns.
@@ -27,9 +33,8 @@ def allowed_file(filename):
 #     response.headers['Expires'] = '0'
 #     return response
 
-# main directory of programme
 @app.route('/', methods=['GET', 'POST'])
-def upload_file():
+def upload_file():    
     try:
         # remove files created more than 5 minute ago
         os.system("find static/images/ -maxdepth 1 -mmin +5 -type f -delete")
@@ -44,19 +49,27 @@ def upload_file():
         files = [knee_xray]        
         img_name = str(uuid.uuid4()) + ".png"
         file_names = [img_name]
-        for i, file in enumerate(files):
-            # if user does not select file, browser also
-            # submit an empty part without filename
+        for i, file in enumerate(files):                    
             if file.filename == '':
+                # if user does not select file, browser also
                 return redirect(request.url)
             if file and allowed_file(file.filename):
+                # submit an empty part without filename
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_names[i]))        
-        # pipeline
-        predict_img.pre_processing(img_name=file_names[-1])
-        result_params = predict_img.predict()
         
-        return render_template('success.html', **result_params)
+        # pipeline        
+        pipeline = Pipeline(img_name=file_names[-1])
+        pipeline.detect_to_crop()
+        pipeline.pre_processing()
+        pipeline.predict(model)
+        
+        return render_template('success.html', **pipeline.result)
     return render_template('upload.html')
+
+# @app.route('/api', methods=['GET', 'POST'])
+# def api():
+#     dict = None
+#     return jsonify(dict)
 
 
 @app.errorhandler(404)
